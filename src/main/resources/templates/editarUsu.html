@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>APP Usuario</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class= "container">
+			<form th:action="@{/USER/edit}" method="post"  enctype="multipart/form-data">
+					<div class="modal-body">
+						<div class="card-body">
+							<div th:if="${usuario!=null}" style="text-align: center;">
+								<img class="imagen"	th:if="${usuario.imagen!=null}"
+										th:src="@{'/images/' + ${usuario.imagen}}" th:alt="${usuario.imagen}"
+										style="width: 200px; height: 200px; border-radius: 100%;">
+								<img class="imagen" th:if="${usuario.imagen==null}"
+										th:src="@{'/images/users.png'}"	style="width: 60px; height: 50px; border-radius: 100%;">
+							</div>
+							<div class="form-floating mb-3">
+						
+								<input type="text" class="form-control" name="nombre"
+									id="nombre"  th:if="${usuario!=null}"
+									th:value="${usuario.nombre}"
+									placeholder="nombre" required> <label
+									for="floatingName">Nombre:</label>
+							</div>
+							<div class="form-floating mb-3">
+								<select class="form-control" id="gender" name="gender"  required>
+									<option th:value="'male'" th:text="Male" th:selected="${'male'== usuario.gender}"></option>
+									<option th:value="'female'" th:text="Female" th:selected="${'female'== usuario.gender}"></option>
+								</select> <label for="floatingPassword">Genero:</label>
+							</div>
+								<label for="floatingPassword">Email:</label>
+								<a class="btn btn-primary" onclick="IngresaMail()">+</a>
+							<textarea class="form-control" name="email"	id="email"  th:if="${usuario!=null}"
+									th:text="${usuario.email}"></textarea>
+							<br>
+							<div class="form-floating mb-3">
+								<select class="form-control" id="estatus" name="estatus" required>
+									<option  th:value="'200'" th:text="Active" th:selected="${'200'== usuario.estatus}"></option>
+									<option th:value="'500'" th:text="Inactive" th:selected="${'500'== usuario.estatus}"></option>
+								</select> <label for="floatingPassword">Estatus:</label>
+							</div>
+							<div class="form-group">
+								<label for="imagen">Subir Archivo</label> 
+								<input type="file" class="form-control-file" id="imagenes" name="file">
+							</div>
+						</div>
+					</div>
+					<div class="d-grid">
+						<button class="btn btn-primary btn-login text-uppercase fw-bold"
+							type="submit">Guardar</button>
+					</div>
+				</form>
+		</div>
+	<footer>
+		<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript"
+			th:src="@{/js/script.js}"></script>
+		<script type="text/javascript" th:inline="javascript">
+			function IngresaMail() {
+			   let email1 = document.getElementById("email").value;
+			   let email = prompt('¿Cuál su correo?');
+			   emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+			    if (emailRegex.test(email)) {
+			      if(email1==''){
+					   	document.getElementById("email").value = email;
+				  }else{
+				       	document.getElementById("email").value = email1 + ','+ email;
+				  }
+			    } else {
+			   		 alert("Correo Incorrecto!");
+			   		IngresaMail();
+			    }
+			}
+		</script>
+	</footer>
+</body>
+
+</html>

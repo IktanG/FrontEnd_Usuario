@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.list-inicio::before {
+        content: url('../image/iconos/inicio.png');
+
+}
+
+.list-usuarios::before {
+        content: url('../image/iconos/user.png');
+}
+
+.list-estadisticos::before {
+        content: url('../image/iconos/stats.png');
+}
+
+.list-salir::before {
+        content: url('../image/iconos/exit.png');
+}
+
+.body{
+	background-color:#FAFAF8;
+}
+
+      #pie { 
+        background-color:#3f3e3a;
+        color:#ffffff;
+        padding:5px;
+        text-align:center;
+      }
+       #contenido {
+        background-color:#ffffff;
+        float:left;
+        height:auto;
+        padding:10px;
+        width:500px;
+         
+      }

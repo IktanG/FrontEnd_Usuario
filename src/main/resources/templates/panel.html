@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>APP Usuario</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3">
+				<h4 class="text-center">Listado Usuario</h4>
+				<form th:action="@{/USER/ListUSU}" method="GET">
+					<button id="Buscar" class="btn btn-primary text-uppercase fw-bold"
+						type="submit">Buscar</button>
+				</form>
+				<br>
+				<div>
+					<button type="button"
+						class="btn btn-primary text-uppercase fw-bold"
+						data-bs-toggle="modal" data-bs-target="#staticBackdrop">Crear
+						Usuario</button>
+				</div>
+			</div>
+			<div id="resultados" class="col-8">
+				<div class="table-responsive">
+					<table class="table" id="RET" th:if="${ResultUSU!=null}">
+						<thead class="table-dark">
+							<tr class="text-light bg-primary">
+								<th style="text-align: center;" scope="col">Foto</th>
+								<th style="text-align: center;" scope="col">ID</th>
+								<th style="text-align: center;" scope="col">Nombre</th>
+								<th style="text-align: center;" scope="col">Email</th>
+								<th style="text-align: center;" scope="col">Gender</th>
+								<th style="text-align: center;" scope="col">Estatus</th>
+								<th style="text-align: center;" scope="col">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="result:${ResultUSU}">
+								<td style="text-align: center;"><img class="imagen"
+									th:if="${result.imagen!=null}"
+									th:src="@{'/images/' + ${result.imagen}}"
+									th:alt="${result.imagen}"
+									style="width: 60px; height: 50px; border-radius: 100%;">
+									<img class="imagen" th:if="${result.imagen==null}"
+									th:src="@{'/images/users.png'}" th:alt="${result.imagen}"
+									style="width: 60px; height: 50px; border-radius: 100%;">
+								</td>
+								<td style="text-align: center;" th:text="${result.id}"></td>
+								<td style="text-align: center;" th:text="${result.nombre}"></td>
+								<td style="text-align: center;" th:text="${result.email}"></td>
+								<td style="text-align: center;" th:text="${result.Gender}"></td>
+								<td style="text-align: center;" th:if="${result.Estatus} eq '200'">Activo</td>
+								<td style="text-align: center;" th:if="${result.Estatus} eq '500'">Inactivo</td>
+								<td style="text-align: center;">
+								<a class="btn btn-primary btn-xs"
+									th:href="@{'/USER/elimina/' + ${result.id}}"> Eliminar</a> 
+								<a
+									class="btn btn-primary btn-xs"
+									th:href="@{'/USER/ver/' + ${result.id}}">Ver</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<nav th:replace="paginator-nav :: paginator"></nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 1-->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title" id="staticBackdropLabel">Crear nuevo
+						usuario</h3>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<form th:action="@{/USER/NewUser}" method="post"
+					th:object="${NewUsu}" enctype="multipart/form-data">
+					<div class="modal-body">
+						<div class="card-body">
+							<div class="form-floating mb-3">
+								<input type="text" class="form-control" name="nombre"
+									id="nombre" placeholder="nombre" required> <label
+									for="floatingName">Nombre:</label>
+							</div>
+							<div class="form-floating mb-3">
+								<select class="form-control" id="gender" name="gender" required>
+									<option th:value="'male'" th:text="Male"></option>
+									<option th:value="'female'" th:text="Female"></option>
+								</select> <label for="floatingPassword">Genero:</label>
+							</div>
+							<label for="floatingPassword">Email:</label> <a
+								class="btn btn-primary" onclick="IngresaMail()">+</a>
+							<textarea class="form-control" name="email" id="email"></textarea>
+							<br>
+							<div class="form-floating mb-3">
+								<select class="form-control" id="estatus" name="estatus"
+									required>
+									<option th:value="'200'" th:text="active"></option>
+									<option th:value="'500'" th:text="inactive"></option>
+								</select> <label for="floatingPassword">Estatus:</label>
+							</div>
+							<div class="form-group">
+								<label for="imagen">Subir Archivo</label> <input type="file"
+									class="form-control-file" id="imagenes" name="file">
+							</div>
+
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">Close</button>
+						<input class="btn btn-success" type="submit" value="Enviar">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Modal 2-->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+		data-bs-keyboard="false" tabindex="-1"
+		aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header"></div>
+			</div>
+		</div>
+	</div>
+
+	<footer>
+		<script type="text/javascript" th:src="@{/js/html2canvas.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+		<script type="text/javascript" th:inline="javascript"
+			th:src="@{/js/script.js}"></script>
+		<script type="text/javascript" th:inline="javascript">
+			function IngresaMail() {
+			   let email1 = document.getElementById("email").value;
+			   let email = prompt('¿Cuál su correo?');
+			   emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+			    if (emailRegex.test(email)) {
+			      if(email1==''){
+					   	document.getElementById("email").value = email;
+				  }else{
+				       	document.getElementById("email").value = email1 + ','+ email;
+				  }
+			    } else {
+			   		 alert("Correo Incorrecto!");
+			   		IngresaMail();
+			    }
+			}
+		</script>
+	</footer>
+</body>
+
+</html>
